@@ -1,10 +1,16 @@
 const express = require('express')
-const {graphqlHTTP} = require('express-graphql')
+const {graphqlHTTP} = require('express-graphql');
+const { 
+GraphQLObjectType, 
+GraphQLNonNull, 
+GraphQLInt, 
+GraphQLString 
+} = require('graphql');
 
 const app = express()
 const port = 8000;
 
-const todo = [
+const Todo = [
   {
     id: 1,
     name: 'Hiking',
@@ -30,6 +36,45 @@ const todo = [
     description: 'Sasamat Lake'
   }
 ]
+
+const Users = [
+  {
+    id: 1,
+    name: 'David Beckham' 
+  },
+  {
+    id: 2,
+    name: 'Michael Jordan' 
+  },
+  {
+    id: 3,
+    name: 'Justin Trudeau' 
+  },
+  {
+    id: 4,
+    name: 'Sher Arsalaie' 
+  },
+]
+
+const TodoType = new GraphQLObjectType({
+  name: 'Todo',
+  description: 'This represents a todo list made by the user',
+  field: () => ({
+    id: { type: GraphQLNonNull(GraphQLInt) },
+    name: { type: GraphQLNonNull(GraphQLString) },
+    ownerId: { type: GraphQLNonNull(GraphQLInt) },
+    description: { type: GraphQLNonNull(GraphQLString) },
+  })
+})
+
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  description: 'This represents user',
+  field: () => ({
+    id: { type: GraphQLNonNull(GraphQLInt) },
+    name: { type: GraphQLNonNull(GraphQLString) },
+  })
+})
 
 app.use('/graphql', graphqlHTTP({
   graphiql: true,
