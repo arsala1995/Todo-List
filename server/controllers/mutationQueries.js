@@ -20,7 +20,10 @@ const RootMutationType = new GraphQLObjectType({
         ownerId: { type: GraphQLNonNull(GraphQLInt) },
         description: { type: GraphQLNonNull(GraphQLString) },
       },
-      resolve: (parent, args) => {
+      resolve: (parent, args, req) => {
+        if(!req.isAuth) {
+          throw new Error(' You are not Unauthenticated!')
+        }
         const todo = { id: Todos.length + 1, name: args.name, ownerId: args.ownerId, description: args.description}
         Todos.push(todo)
         return todo
@@ -33,7 +36,10 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
+      resolve: (parent, args, req) => {
+        if(!req.isAuth) {
+          throw new Error(' You are not Unauthenticated!')
+        }
         Todos = Todos.filter(item => item.id !== args.id)
         return Todos[args.id]
       }
@@ -88,7 +94,10 @@ const RootMutationType = new GraphQLObjectType({
         name: { type: GraphQLNonNull(GraphQLString) },
         description: { type: GraphQLNonNull(GraphQLString) },
       },
-      resolve: (parent, args) => {
+      resolve: (parent, args, req) => {
+        if(!req.isAuth) {
+          throw new Error(' You are not Unauthenticated!')
+        }
         Todos[args.id - 1].name = args.name
         Todos[args.id - 1].description = args.description
         return Todos[args.id - 1]

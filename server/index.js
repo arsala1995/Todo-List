@@ -4,7 +4,7 @@ const { GraphQLSchema } = require('graphql');
 
 const {RootMutationType} = require('./controllers/mutationQueries');
 const {RootQueryType} = require('./controllers/rootQueries');
-const isAuth = require('./middleware/is-auth')
+const { isAuth } = require('./middleware/is-auth')
 
 const app = express()
 const port = 8000;
