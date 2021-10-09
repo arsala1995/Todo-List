@@ -17,14 +17,13 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Add a todo item',
       args: {
         name: { type: GraphQLNonNull(GraphQLString) },
-        ownerId: { type: GraphQLNonNull(GraphQLInt) },
         description: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: (parent, args, req) => {
         if(!req.isAuth) {
           throw new Error(' You are not Unauthenticated!')
         }
-        const todo = { id: Todos.length + 1, name: args.name, ownerId: args.ownerId, description: args.description}
+        const todo = { id: Todos.length + 1, name: args.name, ownerId: req.userId, description: args.description}
         Todos.push(todo)
         return todo
       }
@@ -37,7 +36,7 @@ const RootMutationType = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: (parent, args, req) => {
-        if(!req.isAuth) {
+        if(!req.isAuth && (req.userId !== args.id)) {
           throw new Error(' You are not Unauthenticated!')
         }
         Todos = Todos.filter(item => item.id !== args.id)
@@ -95,7 +94,7 @@ const RootMutationType = new GraphQLObjectType({
         description: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: (parent, args, req) => {
-        if(!req.isAuth) {
+        if(!req.isAuth && (req.userId !== args.id)) {
           throw new Error(' You are not Unauthenticated!')
         }
         Todos[args.id - 1].name = args.name
