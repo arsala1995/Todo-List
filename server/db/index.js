@@ -28,19 +28,23 @@ const Todos = [
 const Users = [
   {
     id: 1,
-    name: 'David Beckham' 
+    name: 'David Beckham',
+    password: 'password' 
   },
   {
     id: 2,
-    name: 'Michael Jordan' 
+    name: 'Michael Jordan',
+    password: 'password' 
   },
   {
     id: 3,
-    name: 'Justin Trudeau' 
+    name: 'Justin Trudeau',
+    password: 'password' 
   },
   {
     id: 4,
-    name: 'Sher Arsalaie' 
+    name: 'Sher Arsalaie',
+    password: 'password' 
   },
 ]
 

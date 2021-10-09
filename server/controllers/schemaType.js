@@ -23,7 +23,17 @@ const UserType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
     name: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
   })
 })
 
-module.exports = {TodoType, UserType}
+const AuthDataType = new GraphQLObjectType({
+  name: 'Authentication',
+  description: 'This authenticates user',
+  fields: () => ({
+    userId: { type: GraphQLNonNull(GraphQLInt) },
+    token: { type: GraphQLNonNull(GraphQLString) },
+  })
+})
+
+module.exports = {TodoType, UserType, AuthDataType}

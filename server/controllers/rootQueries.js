@@ -1,11 +1,14 @@
+
+const jwt = require('jsonwebtoken')
 const { 
   GraphQLObjectType, 
   GraphQLInt, 
   GraphQLList,
+  GraphQLString,
   } = require('graphql');
 
-const {Todos, Users} = require('../schema/index');
-const {TodoType, UserType} = require('./schemaType');
+const {Todos, Users} = require('../db/index');
+const {TodoType, UserType, AuthDataType} = require('./schemaType');
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -25,9 +28,9 @@ const RootQueryType = new GraphQLObjectType({
       type: TodoType,
       description: 'A single todo item',
       args: {
-        id: { type: GraphQLInt }
+        name: { type: GraphQLString }
       },
-      resolve: (parent, args) => Todos.find(item => item.id === args.id)
+      resolve: (parent, args) => Todos.find(item => item.name === args.name)
     },
     user: {
       type: UserType,
@@ -36,6 +39,28 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLInt }
       },
       resolve: (parent, args) => Users.find(user => user.id === args.id)
+    },
+    login: {
+      type: AuthDataType,
+      description: 'User login',
+      args: {
+        name: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      resolve: (parent, args) => {
+       const user = Users.find(user => user.name === args.name);
+       if (!user) {
+         throw new Error('User does not exist!');
+       }
+       if (user.password !== args.password) {
+        throw new Error('Password is incorrect!');
+       }
+
+       const token = jwt.sign({userId: user.id, name: user.name}, 'somesupersecretkey')
+
+       return { userId: user.id, token: token }
+      }
+
     },
   })
 })

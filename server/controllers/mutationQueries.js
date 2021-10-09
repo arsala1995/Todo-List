@@ -5,7 +5,7 @@ const {
   GraphQLString, 
 } = require('graphql');
 
-const {Todos, Users} = require('../schema/index');
+const {Todos, Users} = require('../db/index');
 const {TodoType, UserType} = require('./schemaType');
 
 const RootMutationType = new GraphQLObjectType({
@@ -44,9 +44,10 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Add a user',
       args: {
         name: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: (parent, args) => {
-        const user = { id: Users.length + 1, name: args.name }
+        const user = { id: Users.length + 1, name: args.name, password: args.password }
         Users.push(user)
         return user
       }
@@ -70,9 +71,11 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
         name: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: (parent, args) => {
-        Users[args.id - 1].name = args.name
+        Users[args.id - 1].name = args.name;
+        Users[args.id - 1].password = args.password
         return Users[args.id - 1]
       }
     },
