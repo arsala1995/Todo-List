@@ -36,7 +36,7 @@ const RootMutationType = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: (parent, args, req) => {
-        if(!req.isAuth && (req.userId !== args.id)) {
+        if(!req.isAuth || (req.userId !== args.id)) {
           throw new Error(' You are not Unauthenticated!')
         }
         Todos = Todos.filter(item => item.id !== args.id)
@@ -63,9 +63,10 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Remove a user',
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
+        ownerId: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: (parent, args) => {
-        Users = Users.filter(user => user.id !== args.id)
+        Users = Users.filter(user => user.id !== args.ownerId)
         return Users[args.id]
       }
     },
@@ -91,10 +92,13 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
         name: { type: GraphQLNonNull(GraphQLString) },
+        ownerId: { type: GraphQLNonNull(GraphQLInt) },
         description: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: (parent, args, req) => {
-        if(!req.isAuth && (req.userId !== args.id)) {
+        console.log("user id from req", req.userId)
+        console.log("user id from args", args.ownerId)
+        if(!req.isAuth || (req.userId !== args.ownerId)) {
           throw new Error(' You are not Unauthenticated!')
         }
         Todos[args.id - 1].name = args.name
