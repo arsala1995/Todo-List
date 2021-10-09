@@ -4,7 +4,9 @@ const {
 GraphQLObjectType, 
 GraphQLNonNull, 
 GraphQLInt, 
-GraphQLString 
+GraphQLString, 
+GraphQLList,
+GraphQLSchema
 } = require('graphql');
 
 const app = express()
@@ -59,7 +61,7 @@ const Users = [
 const TodoType = new GraphQLObjectType({
   name: 'Todo',
   description: 'This represents a todo list made by the user',
-  field: () => ({
+  fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
     name: { type: GraphQLNonNull(GraphQLString) },
     ownerId: { type: GraphQLNonNull(GraphQLInt) },
@@ -68,12 +70,33 @@ const TodoType = new GraphQLObjectType({
 })
 
 const UserType = new GraphQLObjectType({
-  name: 'User',
+  name: 'Users',
   description: 'This represents user',
-  field: () => ({
+  fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
     name: { type: GraphQLNonNull(GraphQLString) },
   })
+})
+
+const RootQueryType = new GraphQLObjectType({
+  name: 'Query',
+  description: 'Root Query',
+  fields: () => ({
+    todos: {
+      type: new GraphQLList(TodoType),
+      description: 'List of all todos',
+      resolve: () => Todo
+    },
+    users: {
+      type: new GraphQLList(UserType),
+      description: 'List of all todos',
+      resolve: () => Users
+    }
+  })
+})
+
+const schema = new GraphQLSchema({
+  query: RootQueryType
 })
 
 app.use('/graphql', graphqlHTTP({
