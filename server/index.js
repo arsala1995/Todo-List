@@ -12,7 +12,7 @@ GraphQLSchema
 const app = express()
 const port = 8000;
 
-const Todo = [
+const Todos = [
   {
     id: 1,
     name: 'Hiking',
@@ -59,7 +59,7 @@ const Users = [
 ]
 
 const TodoType = new GraphQLObjectType({
-  name: 'Todo',
+  name: 'Todos',
   description: 'This represents a todo list made by the user',
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
@@ -85,18 +85,34 @@ const RootQueryType = new GraphQLObjectType({
     todos: {
       type: new GraphQLList(TodoType),
       description: 'List of all todos',
-      resolve: () => Todo
+      resolve: () => Todos
     },
     users: {
       type: new GraphQLList(UserType),
       description: 'List of all todos',
       resolve: () => Users
-    }
+    },
+    todo: {
+      type: TodoType,
+      description: 'A single todo item',
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => Todos.find(item => item.id === args.id)
+    },
+    user: {
+      type: UserType,
+      description: 'A single user',
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => Users.find(user => user.id === args.id)
+    },
   })
 })
 
 const schema = new GraphQLSchema({
-  query: RootQueryType
+  query: RootQueryType,
 })
 
 app.use('/graphql', graphqlHTTP({
