@@ -3,9 +3,9 @@ const {
   GraphQLNonNull, 
   GraphQLInt, 
   GraphQLString, 
-  } = require('graphql');
+} = require('graphql');
 
-
+//Todo list type representing the Todo items that consists of id, name, ownerid and the description
 const TodoType = new GraphQLObjectType({
   name: 'Todos',
   description: 'This represents a todo list made by the user',
@@ -17,6 +17,7 @@ const TodoType = new GraphQLObjectType({
   })
 })
 
+//User type representing the Users that consists of id, name, and password for users
 const UserType = new GraphQLObjectType({
   name: 'Users',
   description: 'This represents user',
@@ -27,6 +28,7 @@ const UserType = new GraphQLObjectType({
   })
 })
 
+//Type for authenticating user that will hold token and userId for the user logging in
 const AuthDataType = new GraphQLObjectType({
   name: 'Authentication',
   description: 'This authenticates user',
@@ -36,4 +38,4 @@ const AuthDataType = new GraphQLObjectType({
   })
 })
 
-module.exports = {TodoType, UserType, AuthDataType}
+module.exports = { TodoType, UserType, AuthDataType }
