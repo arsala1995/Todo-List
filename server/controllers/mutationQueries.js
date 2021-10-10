@@ -1,4 +1,4 @@
-const { Todos, Users } = require('../db/index');
+const { Todos, Users } = require('../db/testDb');
 const { TodoType, UserType } = require('./schemaType');
 const { 
   GraphQLObjectType, 

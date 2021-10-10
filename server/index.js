@@ -8,7 +8,10 @@ const { client } = require('./db/client');
 const { isAuth } = require('./middleware/is-auth')
 
 const app = express();
+
+//establishing connection with the database
 client.connect();
+
 const port = 8000;
 
 //We need to create schema for our queries and mutations

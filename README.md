@@ -5,6 +5,7 @@ Convergence's technical interview "Todo List" problem.
 # Exercise
 
 A user will be able to view a list of all Todo items in database, user will be able to filter the items using name to view certain item. Logged in user will be able to create a new todo list. If the user is logged in and the Item belongs to logged in user he/she will be able to update or remove that item. 
+
 # Rules
 
 - Any user can view todo list. 
@@ -15,7 +16,7 @@ A user will be able to view a list of all Todo items in database, user will be a
 
 # Setup
 
-## Node
+## Installing Dependencies
 
 1. Clone the repo in your terminal
 
@@ -24,6 +25,23 @@ A user will be able to view a list of all Todo items in database, user will be a
 ```bash
 npm install
 ```
+
+## Creating Database
+
+1. psql -d localhost -U {YOUR_USERNAME}
+2. CREATE DATABASE todo;
+3. \connect todo;
+4. Create tables: 
+
+Create Users table:
+CREATE TABLE users ( id SERIAL PRIMARY KEY, name VARCHAR (255), password VARCHAR (255) );
+
+Create Todos table:
+CREATE Table todos ( id SERIAL PRIMARY KEY, name VARCHAR (255), owner_id INT NOT NULL REFERENCES users (id), description VARCHAR (255) );
+
+## Preparing .env file
+
+After successfully creating database create .env file using .env.example and fillout the information needed in .env file.
 
 ## Run
 
@@ -65,7 +83,9 @@ This will return the new item's id, name, ownerId and description that is added 
 
 # Note:
 
-You might not be able to create, update or remove items on Graphql as it requires authentication and needs to remember the user throughout the login session hence, graphql is not able to perform query and mutation at the same time. 
+1. Tables are not being used from database, the server is using hardcoded data from the db folder under testDb file.
+
+2. You might not be able to create, update or remove items on Graphql as it requires authentication and needs to remember the user throughout the login session hence, graphql is not able to perform query and mutation at the same time. 
 
 Solution: Download and install Postman in your local machine and create a new post call from postman to  http://localhost:8000/graphql. Write Query to login to the user and copy the token after you get an output from login, save that token in your header in postman that will remember this user as logged in. After that you will be able to perform mutations where you can create, update and delete todo list items.
 
