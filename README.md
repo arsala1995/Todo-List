@@ -69,6 +69,4 @@ You might not be able to create, update or remove items on Graphql as it require
 
 Solution: Download and install Postman in your local machine and create a new post call from postman to  http://localhost:8000/graphql. Write Query to login to the user and copy the token after you get an output from login, save that token in your header in postman that will remember this user as logged in. After that you will be able to perform mutations where you can create, update and delete todo list items.
 
-# Contact
 
-We encourage you to use your best discretion, but also to ask questions and communicate if you need it.
