@@ -2,11 +2,13 @@ const express = require('express')
 const {graphqlHTTP} = require('express-graphql');
 const { GraphQLSchema } = require('graphql');
 
-const {RootMutationType} = require('./controllers/mutationQueries');
-const {RootQueryType} = require('./controllers/rootQueries');
+const { RootMutationType } = require('./controllers/mutationQueries');
+const { RootQueryType } = require('./controllers/rootQueries');
+const { client } = require('./db/client');
 const { isAuth } = require('./middleware/is-auth')
 
-const app = express()
+const app = express();
+client.connect();
 const port = 8000;
 
 //We need to create schema for our queries and mutations

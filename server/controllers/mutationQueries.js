@@ -26,7 +26,7 @@ const RootMutationType = new GraphQLObjectType({
 
         //We check for the user authentication to know whether the user is logged in and has token.
         if(!req.isAuth) {
-          throw new Error(' You are not Unauthenticated!')
+          throw new Error(' You are Unauthenticated!')
         }
         const todo = { id: Todos.length + 1, name: args.name, ownerId: req.userId, description: args.description}
         Todos.push(todo)
@@ -46,7 +46,7 @@ const RootMutationType = new GraphQLObjectType({
 
         //authenticating and making sure the logged in user is the owner of item to delete
         if(!req.isAuth || (req.userId !== args.ownerId)) {
-          throw new Error(' You are not Unauthenticated!')
+          throw new Error(' You are Unauthenticated!')
         }
         Todos = Todos.filter(item => item.id !== args.id)
         return Todos[args.id]
@@ -67,7 +67,7 @@ const RootMutationType = new GraphQLObjectType({
         
         //authenticating and making sure the logged in user is the owner of item to delete
         if(!req.isAuth || (req.userId !== args.ownerId)) {
-          throw new Error(' You are not Unauthenticated!')
+          throw new Error(' You are Unauthenticated!')
         }
         Todos[args.id - 1].name = args.name
         Todos[args.id - 1].description = args.description

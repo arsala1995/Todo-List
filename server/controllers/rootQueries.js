@@ -1,7 +1,7 @@
 
 const jwt = require('jsonwebtoken');
-const {Todos, Users} = require('../db/index');
-const {TodoType, UserType, AuthDataType} = require('./schemaType');
+const { Todos, Users } = require('../db/testDb');
+const { TodoType, UserType, AuthDataType } = require('./schemaType');
 const { 
   GraphQLObjectType, 
   GraphQLInt, 
